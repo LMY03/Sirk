@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Sirk</title>
+    <link rel="icon" href="../public/img/icon.png" type="image/x-icon" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-img {
+            width: 50%;
+        }
+
+        .date-range {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .date-range label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .date-range input[type="date"] {
+            padding: 10px;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .report-container {
+            display: flex;
+            flex: 2;
+            max-width: 90%;
+        }
+
+        .primary-report {
+            flex: 2; /* Adjust the width of the primary report */
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .report-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .report-table table, .report-table th, .report-table td {
+            border: 1px solid #ccc;
+        }
+
+        .report-table th, .report-table td {
+            padding: 10px;
+        }
+
+        .side-col {
+            margin-left: 30px;
+        }
+
+        .section-report {
+            flex: 1; /* Adjust the width of the section report */
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .chart-container {
+            width: 100%; /* Ensure the chart spans the entire container */
+        }
+
+    </style>
+</head>
+<body>
+    <% if (isAdmin) { %> 
+        <form action="/createIsyu" method="post">
+            <input type="text" id="isyu" name="isyu" />
+            <input type="submit" />
+        </form>
+    <% } %>
+    <img class="header-img" src="../public/img/APP_Header.png" alt="App Header" />
+    <h2>Oras: <span id="timePlaceholder"></span></h2>
+    </div>
+    <% if (sirkList.length != 0) { %>
+    <div class="report-container">
+        <!-- Primary Report -->
+        <div class="primary-report report-table">
+            <h2>Report</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Sirk</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% sirkList.forEach(record => {%>
+                    <tr>
+                        <td><%= record.id %></td>
+                        <td><%= record.name %></td>
+                        <td><%= record.position %></td>
+                        <td><%= record.sirk[isyu] %></td>
+                    </tr>
+                    <%}); %>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="side-col">
+            <!-- Section Report with Bar Graph -->
+            <div class="section-report">
+                <h2>Seksyon</h2>
+                <div class="chart-container" id="bar-chart"><canvas id="myChart"></canvas></div>
+            </div>
+            <!-- Section  -->
+        </div>
+    </div>
+    <% } else {%>
+        <h2>No Report Available</h2>
+    <% } %>
+    <%-chartScript%>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const timePlaceholder = document.getElementById('timePlaceholder');
+
+            function updateTime() {
+                fetch('/get-time') // Send an AJAX request to the server
+                    .then(response => response.json())
+                    .then(data => {
+                        const time = data.time;
+                        timePlaceholder.textContent = time; // Update the content on the page
+                    })
+                    .catch(error => {
+                        console.error('Error fetching time:', error);
+                    });
+            }
+
+            // Initial time update
+            updateTime();
+
+            // Update the time every second (1000 milliseconds)
+            setInterval(updateTime, 1000);
+        });
+    </script>
+</body>
+</html>
