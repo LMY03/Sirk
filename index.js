@@ -4,6 +4,7 @@ const passport = require('./controller/passport.js'); // Import the passport mod
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const path = require('path');
+const process = require('dotenv').config();
 
 const routes = require('./route.js');
 
