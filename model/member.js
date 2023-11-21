@@ -17,7 +17,8 @@ const memberSchema = new mongoose.Schema({
         type: String, required: true, immutable: true
     },
     folderName: String,
-    sirk: Array,
+    oSirk: Array,
+    mSirk: Array,
     exempted: Boolean
 });
 

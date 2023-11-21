@@ -7,6 +7,7 @@ const admin = require('./controller/admin.js');
 
 router.get('/', isAuth, report.render);
 router.get('/get-time', isAuth, report.time);
+router.get('/get-reports', isAuth, report.store);
 
 router.get('/auth/google', authenticate);
 router.get('/auth/google/callback', handleCallback);

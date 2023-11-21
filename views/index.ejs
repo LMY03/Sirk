@@ -16,6 +16,46 @@
             align-items: center;
         }
 
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Toggle Switch */
+        .form-check-input {
+            cursor: pointer;
+        }
+
         .header-img {
             width: 50%;
         }
@@ -82,23 +122,162 @@
             width: 100%; /* Ensure the chart spans the entire container */
         }
 
+        .admin-bar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: right;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .admin-name {
+            margin-right: 20px;
+        }
+
+        /* Center Image and Time */
+        .header-img-container {
+            text-align: center;
+            margin-top: 60px; /* Adjust according to the height of the admin bar */
+        }
+
+        .time-container {
+            text-align: center;
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+
+        /* Filter Checkboxes and Toggle Design */
+        .section-filters label {
+            margin-right: 15px;
+            background-color: #4CAF50;
+            border-radius: 5px;
+            color: white;
+            padding: 5px 10px;
+        }
+
+        .section-filters input[type="checkbox"] {
+            accent-color: #4CAF50;
+        }
+
+        .form-check-input:checked {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+        }
+
+        .form-check-label {
+            margin-left: 10px;
+        }
+
+        /* Apply Primary Colors */
+        .modal-content, .primary-report, .section-report, .report-table th {
+            border-color: #4CAF50;
+        }
+
+        .date-range input[type="date"]:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px #4CAF50;
+        }
     </style>
+    <!-- <link rel="stylesheet" href="../public/css/style.css" /> -->
 </head>
 <body>
-    <% if (isAdmin) { %> 
-        <form action="/createIsyu" method="post">
-            <input type="text" id="isyu" name="isyu" />
-            <input type="submit" />
-        </form>
+    <% if (admin) { %>
+        <div class="admin-bar">
+            <span class="admin-name">Howdy <%=admin.name%> <%=admin.position%> </span>
+            <button id="createBtn">Create Isyu</button>
+            <button id="editBtn">Edit Isyu</button>
+            <button id="deleteBtn">Delete Isyu</button>
+        </div>
+        <!-- Create Modal -->
+        <div id="createModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form action="/createIsyu" method="post">
+                    <input type="text" id="isyu" name="isyu" />
+                    <input type="text" id="oStartDate" name="oStartDate" />
+                    <input type="text" id="oDoubleDate" name="oDoubleDate" />
+                    <input type="text" id="oEndDate" name="oEndDate" />
+                    <input type="text" id="mStartDate" name="mStartDate" />
+                    <input type="text" id="mDoubleDate" name="mDoubleDate" />
+                    <input type="text" id="mEndDate" name="mEndDate" />
+                    <input type="submit" />
+                </form>
+            </div>
+        </div>
+        <!-- Edit Modal -->
+        <div id="editModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form action="/editIsyu" method="post">
+                    <input type="text" id="isyu" name="isyu" value="<%=issue.name%>" />
+                    <input type="text" id="oStartDate" name="oStartDate" value="<%=issue.oSirk.startDate%>" />
+                    <input type="text" id="oDoubleDate" name="oDoubleDate" value="<%=issue.oSirk.doubleDate%>" />
+                    <input type="text" id="oEndDate" name="oEndDate" value="<%=issue.oSirk.endDate%>" />
+                    <input type="text" id="mStartDate" name="mStartDate" value="<%=issue.mSirk.startDate%>" />
+                    <input type="text" id="mDoubleDate" name="mDoubleDate" value="<%=issue.mSirk.doubleDate%>" />
+                    <input type="text" id="mEndDate" name="mEndDate" value="<%=issue.mSirk.endDate%>" />
+                    <input type="submit" />
+                </form>
+            </div>
+        </div>
+        <!-- Delete Modal -->
+        <div id="deleteModal" class="modal">
+            <p>1 <%=issues.length%></p>
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Isyu</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (const [key, value] of Object.entries(issues)) { %>
+                            <tr>
+                                <td><%=key%></td>
+                                <td>
+                                    <form action="/deleteIsyu" method="post">
+                                        <input type="submit" value="Delete" />
+                                    </form>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     <% } %>
-    <img class="header-img" src="../public/img/APP_Header.png" alt="App Header" />
-    <h2>Oras: <span id="timePlaceholder"></span></h2>
+    <div class="header-img-container">
+        <img class="header-img" src="../public/img/APP_Header.png" alt="App Header" />
     </div>
-    <% if (sirkList.length != 0) { %>
+    <div class="time-container">
+        <h2><span id="timePlaceholder"></span></h2>
+        <h3><span>Last Updated: <%=lastUpdateTime%></span></h3>
+    </div>
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <label class="form-check-label" for="flexSwitchCheckDefault">Toggle Manual/Online Sirkulation</label>
+      </div>
+    <div class="section-filters">
+        <label><input type="checkbox" class="section-filter" value="Balita">Balita</label>
+        <label><input type="checkbox" class="section-filter" value="Isports">Isports</label>
+        <label><input type="checkbox" class="section-filter" value="Bayan">Bayan</label>
+        <label><input type="checkbox" class="section-filter" value="BnK">BnK</label>
+        <label><input type="checkbox" class="section-filter" value="Retrato">Retrato</label>
+        <label><input type="checkbox" class="section-filter" value="Sining">Sining</label>
+        <label><input type="checkbox" class="section-filter" value="IT">IT</label>
+    </div>
     <div class="report-container">
         <!-- Primary Report -->
         <div class="primary-report report-table">
-            <h2>Report</h2>
+            <h2 id="report-header">Reports</h2>
             <table>
                 <thead>
                     <tr>
@@ -108,16 +287,7 @@
                         <th>Sirk</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <% sirkList.forEach(record => {%>
-                    <tr>
-                        <td><%= record.id %></td>
-                        <td><%= record.name %></td>
-                        <td><%= record.position %></td>
-                        <td><%= record.sirk[isyu] %></td>
-                    </tr>
-                    <%}); %>
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
 
@@ -130,32 +300,63 @@
             <!-- Section  -->
         </div>
     </div>
-    <% } else {%>
-        <h2>No Report Available</h2>
-    <% } %>
-    <%-chartScript%>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../public/js/script.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const timePlaceholder = document.getElementById('timePlaceholder');
+        // Create Modal script
+        var createModal = document.getElementById("createModal");
+        var createBtn = document.getElementById("createBtn");
+        var spanCreate = createModal.getElementsByClassName("close")[0];
 
-            function updateTime() {
-                fetch('/get-time') // Send an AJAX request to the server
-                    .then(response => response.json())
-                    .then(data => {
-                        const time = data.time;
-                        timePlaceholder.textContent = time; // Update the content on the page
-                    })
-                    .catch(error => {
-                        console.error('Error fetching time:', error);
-                    });
-            }
+        createBtn.onclick = function() {
+            closeAllModals();
+            createModal.style.display = "block";
+        }
 
-            // Initial time update
-            updateTime();
+        spanCreate.onclick = function() {
+            createModal.style.display = "none";
+        }
 
-            // Update the time every second (1000 milliseconds)
-            setInterval(updateTime, 1000);
-        });
+        // Edit Modal script
+        var editModal = document.getElementById("editModal");
+        var editBtn = document.getElementById("editBtn");
+        var spanEdit = editModal.getElementsByClassName("close")[0];
+
+        editBtn.onclick = function() {
+            closeAllModals();
+            editModal.style.display = "block";
+        }
+
+        spanEdit.onclick = function() {
+            editModal.style.display = "none";
+        }
+
+        // Deletes Modal script
+        var deleteModal = document.getElementById("deleteModal");
+        var deleteBtn = document.getElementById("deleteBtn");
+        var spanDelete = deleteModal.getElementsByClassName("close")[0];
+
+        deleteBtn.onclick = function() {
+            closeAllModals();
+            deleteModal.style.display = "block";
+        }
+
+        spanDelete.onclick = function() {
+            deleteModal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == createModal) createModal.style.display = "none";
+            else if (event.target == editModal) editModal.style.display = "none";
+            else if (event.target == deleteModal) deleteModal.style.display = "none";
+        }
+
+        function closeAllModals() {
+            var modals = document.querySelectorAll('.modal');
+            modals.forEach(function(modal) {
+                modal.style.display = 'none';
+            });
+        }
     </script>
 </body>
 </html>
