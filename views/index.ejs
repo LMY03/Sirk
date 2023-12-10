@@ -197,13 +197,21 @@
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <form action="/createIsyu" method="post">
+
+                    <label for="isyu">Issue Name:</label>
                     <input type="text" id="isyu" name="isyu" />
-                    <input type="text" id="oStartDate" name="oStartDate" />
-                    <input type="text" id="oDoubleDate" name="oDoubleDate" />
-                    <input type="text" id="oEndDate" name="oEndDate" />
-                    <input type="text" id="mStartDate" name="mStartDate" />
-                    <input type="text" id="mDoubleDate" name="mDoubleDate" />
-                    <input type="text" id="mEndDate" name="mEndDate" />
+                    <label for="oStartDate">Online Start Date:</label>
+                    <input type="datetime-local" id="oStartDate" name="oStartDate" />
+                    <label for="oDoubleDate">Online Double Date:</label>
+                    <input type="datetime-local" id="oDoubleDate" name="oDoubleDate" />
+                    <label for="oEndDate">Online End Date:</label>
+                    <input type="datetime-local" id="oEndDate" name="oEndDate" />
+                    <label for="mStartDate">Manual Start Date:</label>
+                    <input type="datetime-local" id="mStartDate" name="mStartDate" />
+                    <label for="mDoubleDate">Manual Double Date:</label>
+                    <input type="datetime-local" id="mDoubleDate" name="mDoubleDate" />
+                    <label for="mEndDate">Manual End Date:</label>
+                    <input type="datetime-local" id="mEndDate" name="mEndDate" />
                     <input type="submit" />
                 </form>
             </div>
@@ -214,13 +222,21 @@
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <form action="/editIsyu" method="post">
+
+                    <label for="isyu">Issue Name:</label>
                     <input type="text" id="isyu" name="isyu" value="<%=issue.name%>" />
-                    <input type="text" id="oStartDate" name="oStartDate" value="<%=issue.oSirk.startDate%>" />
-                    <input type="text" id="oDoubleDate" name="oDoubleDate" value="<%=issue.oSirk.doubleDate%>" />
-                    <input type="text" id="oEndDate" name="oEndDate" value="<%=issue.oSirk.endDate%>" />
-                    <input type="text" id="mStartDate" name="mStartDate" value="<%=issue.mSirk.startDate%>" />
-                    <input type="text" id="mDoubleDate" name="mDoubleDate" value="<%=issue.mSirk.doubleDate%>" />
-                    <input type="text" id="mEndDate" name="mEndDate" value="<%=issue.mSirk.endDate%>" />
+                    <label for="oStartDate">Online Start Date:</label>
+                    <input type="datetime" id="oStartDate" name="oStartDate" value="<%=issue.oSirk.startDate%>" />
+                    <label for="oDoubleDate">Online Double Date:</label>
+                    <input type="datetime" id="oDoubleDate" name="oDoubleDate" value="<%=issue.oSirk.doubleDate%>" />
+                    <label for="oEndDate">Online End Date:</label>
+                    <input type="datetime" id="oEndDate" name="oEndDate" value="<%=issue.oSirk.endDate%>" />
+                    <label for="mStartDate">Manual Start Date:</label>
+                    <input type="datetime" id="mStartDate" name="mStartDate" value="<%=issue.mSirk.startDate%>" />
+                    <label for="mDoubleDate">Manual Double Date:</label>
+                    <input type="datetime" id="mDoubleDate" name="mDoubleDate" value="<%=issue.mSirk.doubleDate%>" />
+                    <label for="mEndDate">Manual End Date:</label>
+                    <input type="datetime" id="mEndDate" name="mEndDate" value="<%=issue.mSirk.endDate%>" />
                     <input type="submit" />
                 </form>
             </div>

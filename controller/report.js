@@ -9,18 +9,18 @@ let lastUpdateTime = null;
 
 async function initialize() {
     const getPromises = [];
-    const oFolderList = await google.getList(model.issue.oSirk.folderID);
-    // const mFolderList = await google.getList(model.issue.mSirk.folderID);
+    // const oFolderList = await google.getList(model.issue.oSirk.folderID);
+    // // const mFolderList = await google.getList(model.issue.mSirk.folderID);
   
-    oFolderList.forEach(folder => {
-        if (folder.name === '01. BALITA') getPromises.push(getSectionList(folder.id, 'Balita'));
-        if (folder.name === '02. ISPORTS') getPromises.push(getSectionList(folder.id, 'Isports'));
-        if (folder.name === '03. BAYAN') getPromises.push(getSectionList(folder.id, 'Bayan'));
-        if (folder.name === '04. BNK') getPromises.push(getSectionList(folder.id, 'BnK'));
-        if (folder.name === '05. RETRATO') getPromises.push(getSectionList(folder.id, 'Retrato'));
-        if (folder.name === '06. SINING') getPromises.push(getSectionList(folder.id, 'Sining'));
-        if (folder.name === '07. IT') getPromises.push(getSectionList(folder.id, 'IT'));
-    });
+    // oFolderList.forEach(folder => {
+    //     if (folder.name === '01. BALITA') getPromises.push(getSectionList(folder.id, 'Balita'));
+    //     if (folder.name === '02. ISPORTS') getPromises.push(getSectionList(folder.id, 'Isports'));
+    //     if (folder.name === '03. BAYAN') getPromises.push(getSectionList(folder.id, 'Bayan'));
+    //     if (folder.name === '04. BNK') getPromises.push(getSectionList(folder.id, 'BnK'));
+    //     if (folder.name === '05. RETRATO') getPromises.push(getSectionList(folder.id, 'Retrato'));
+    //     if (folder.name === '06. SINING') getPromises.push(getSectionList(folder.id, 'Sining'));
+    //     if (folder.name === '07. IT') getPromises.push(getSectionList(folder.id, 'IT'));
+    // });
   
     // Wait for all getSectionList promises to resolve
     await Promise.all(getPromises);
@@ -128,14 +128,18 @@ async function isWithinDateRange() {
     return (currentDate >= oSirkStart && currentDate <= oSirkEnd) || (currentDate >= mSirkStart && currentDate <= mSirkEnd);
 }
 
-cron.schedule('*/30 * * * *', () => {
-    if (isWithinDateRange()) {
-        lastUpdateTime = new Date().toLocaleString();
+// cron.schedule('*/30 * * * *', () => {
+//     if (isWithinDateRange()) {
+//         lastUpdateTime = new Date().toLocaleString();
         
-        console.log(lastUpdateTime);
-        main();
-    }
-});
+//         console.log(lastUpdateTime);
+//         main();
+//     }
+// });
+
+main();
+
+
 
 const oSirkList = [];
 const mSirkList = [];

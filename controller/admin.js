@@ -7,12 +7,12 @@ const admin = {
     },
     createIsyu: async function(req, res) {
         const isyuName = req.body.isyu.toUpperCase();
-        const oStartDate = 1;
-        const oDoubleDate = 1; 
-        const oEndDate = 1;
-        const mStartDate = 1;
-        const mDoubleDate = 1; 
-        const mEndDate = 1;
+        const oStartDate = new Date(req.body.oStartDate).toISOString();
+        const oDoubleDate = new Date(req.body.oDoubleDate).toISOString();
+        const oEndDate = new Date(req.body.oEndDate).toISOString();
+        const mStartDate = new Date(req.body.mStartDate).toISOString();
+        const mDoubleDate = new Date(req.body.mDoubleDate).toISOString(); 
+        const mEndDate = new Date(req.body.mEndDate).toISOString();
 
         if (!model.issues[isyuName]) {
 
